@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">
+        CRUD
+    </ui:define>
+    <ui:param name="tittle" value="CRUD"/>
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12" >
+                <h:form id="formMain" prependId="false"> 
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup layout="block" style="width: 100%;" class="panelInput" >
+                            <p:commandButton value="Nuevo registro"
+                                             icon="pi pi-save" actionListener="#{customerMB.create()}"
+                                             style="width: 100%;"/>  
+                        </h:panelGroup>
+                    </p:panelGrid>                    
+                    <p:dataTable id="dtCustomer" widgetVar="dtCustomer" var="customer" value="#{customerMB.customers}" rows="10"
+                                 rowKey="#{customer.id}" rowIndexVar="index" emptyMessage="No se encontró ningún dato registrado" filterEvent="enter" paginator="true" paginatorPosition="bottom" 
+                                 lazy="false" currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" showGridlines="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <p:column headerText="Id" style="width: 10%;text-align: center">
+                            <h:outputText value="#{customer.id}"/>
+                        </p:column>       
+                        <p:column headerText="Identificacion" style="width: 10%;text-align: center">
+                            <h:outputText value="#{customer.identificacion}"/>
+                        </p:column>       
+                        <p:column headerText="Nombre completo" style="width: 10%;text-align: center">
+                            <h:outputText value="#{customer.nombreCompleto}"/>
+                        </p:column>       
+                        <p:column headerText="Fecha nacimiento" style="width: 10%;text-align: center">
+                            <h:outputText value="#{customer.fechaNacimiento}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>       
+                        <p:column headerText="Acciones" style="width: 10%;text-align: center">
+                            <p:commandLink title="Ver"
+                                           actionListener="#{customerMB.read(customer.id)}" >
+                                <i class="pi pi-eye" style="font-size: 1.3em; margin-right: 8px; color: #0D47A1;"></i>
+                            </p:commandLink>
+                            <p:commandLink title="Editar"
+                                           actionListener="#{customerMB.update(customer)}" >
+                                <i class="pi pi-user-edit" style="font-size: 1.5em; margin-right: 8px; color: #0D47A1;"></i>
+                            </p:commandLink>
+                            <p:commandLink title="Eliminar"
+                                           actionListener="#{customerMB.delete(customer)}">
+                                <i class="pi pi-trash" style="font-size: 1.5em; margin-right: 5px; color: red;"></i>
+                            </p:commandLink>      
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+        <p:dialog id="dlgFormulario" widgetVar="dlgFormulario"  showHeader="false" modal="true" 
+                  resizable="false" width="40%" closeOnEscape="true">
+            <h:form id="dlgFormularioForm">
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup layout="block" style="width: 100%;" class="panelInput" >
+                        <p:outputLabel for="@next" value="Identificación:" style="font-weight: bold"/><br/>
+                        <p:inputText id="identificacion" class="panelInput" style="width: 100%"
+                                     value="#{customerMB.customer.identificacion}">
+                            <p:ajax process="@this"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" style="width: 100%;" class="panelInput" >
+                        <p:outputLabel for="@next" value="Código:" style="font-weight: bold"/><br/>
+                        <p:inputText id="nombreCompleto" class="panelInput" style="width: 100%"
+                                     value="#{customerMB.customer.nombreCompleto}">
+                            <p:ajax process="@this"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" style="width: 100%;" class="panelInput" id="panelGroupInicio">
+                        <p:outputLabel for="@next" value="Fecha nacimiento:" style="font-weight: bold"/>
+                        <p:datePicker id="fechaNacimiento" class="panelInput" style="width: 100%" value="#{customerMB.customer.fechaNacimiento}" 
+                                      pattern="dd/MM/yyyy" mask="99/99/9999" monthNavigator="true" yearNavigator="true">
+                            <p:ajax process="@this"/>
+                        </p:datePicker>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="#{customerMB.customerView?1:2}" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup layout="block" style="width: 100%;" class="panelInput" >
+                        <p:commandButton value="Guardar" rendered="#{!customerMB.customerView}"
+                                         icon="pi pi-save" actionListener="#{customerMB.save()}"
+                                         style="width: 100%;background:  green"/> 
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" style="width: 100%;" class="panelInput" >
+                        <p:commandButton value="Cerrar"
+                                         icon="pi pi-close" actionListener="#{customerMB.cerrar()}"
+                                         style="width: 100%;background:  red"/>   
+                    </h:panelGroup>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

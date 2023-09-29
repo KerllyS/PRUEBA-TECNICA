@@ -1,0 +1,11 @@
+mx\com\gm\pruebastecnicas\services\interfaces\CustomerService.class
+mx\com\gm\pruebastecnicas\models\Customer.class
+mx\com\gm\pruebastecnicas\util\RespuestaWs.class
+mx\com\gm\pruebastecnicas\util\Service.class
+mx\com\gm\pruebastecnicas\services\ejbs\CustomerEjb.class
+mx\com\gm\pruebastecnicas\util\ServiceEjb.class
+mx\com\gm\pruebastecnicas\util\SisVars.class
+mx\com\gm\pruebastecnicas\util\JsfUtil.class
+mx\com\gm\pruebastecnicas\managebeans\CustomerMB.class
+mx\com\gm\pruebastecnicas\util\Filter.class
+mx\com\gm\pruebastecnicas\util\JsonDateDeserializer.class
